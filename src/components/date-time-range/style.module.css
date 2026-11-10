@@ -1,0 +1,26 @@
+.dateTimeRange {
+  width: 100%;
+  min-width: 0;
+  margin: 0;
+  padding: 1rem 1.25rem 1.25rem;
+  border: 1px solid color-mix(in srgb, currentColor 22%, transparent);
+  border-radius: 0.75rem;
+  background: color-mix(in srgb, currentColor 4%, transparent);
+}
+
+.dateTimeRange legend {
+  padding: 0 0.4rem;
+  font-size: 1.1rem;
+  font-weight: 650;
+}
+
+.selection {
+  display: grid;
+  gap: 0.25rem;
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.selection strong {
+  font-weight: 600;
+}

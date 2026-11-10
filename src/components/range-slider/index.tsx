@@ -7,7 +7,6 @@ export type RangeSliderValue = {
 };
 
 type RangeSliderProps = {
-  legend?: string;
   minValue: number;
   maxValue: number;
   minLimit: number;
@@ -15,6 +14,8 @@ type RangeSliderProps = {
   step?: number;
   precision?: number;
   unit?: string;
+  formatValue?: (value: number) => string;
+  formatWindow?: (value: number) => string;
   ariaLabel?: string;
   onRangeChange?: (value: RangeSliderValue) => void;
 };
@@ -47,7 +48,10 @@ export default function RangeSlider(props: RangeSliderProps) {
   };
 
   const formatValue = (value: number) =>
-    `${value.toFixed(precision())}${props.unit ? ` ${props.unit}` : ''}`;
+    props.formatValue?.(value) ?? `${value.toFixed(precision())}${props.unit ? ` ${props.unit}` : ''}`;
+
+  const formatWindow = (value: number) =>
+    props.formatWindow?.(value) ?? formatValue(value);
 
   const createSnapshot = (
     pointerId: number,
@@ -148,8 +152,7 @@ export default function RangeSlider(props: RangeSliderProps) {
   };
 
   return (
-    <fieldset class={styles.rangeWindow}>
-      <legend>{props.legend ?? 'Date and time range'}</legend>
+    <div class={styles.rangeSlider}>
       <div
         class={styles.rangeWindowContent}
         style={{
@@ -158,7 +161,7 @@ export default function RangeSlider(props: RangeSliderProps) {
         }}
       >
         <div class={styles.barLabel}>
-          <span class={styles.label}>{formatValue(props.maxValue - props.minValue)}</span>
+          <span class={styles.label}>{formatWindow(props.maxValue - props.minValue)}</span>
         </div>
         <div class={styles.rangeTrack}>
           <div
@@ -174,7 +177,7 @@ export default function RangeSlider(props: RangeSliderProps) {
             <button
               class={styles.rangeHandle}
               type="button"
-              aria-label={`Start of ${props.legend ?? 'date and time range'}`}
+              aria-label="Start of selected range"
               onPointerDown={(event) => onHandlePointerDown(event, 'min')}
               onPointerMove={onPointerMove}
               onPointerUp={onPointerEnd}
@@ -184,7 +187,7 @@ export default function RangeSlider(props: RangeSliderProps) {
             <button
               class={styles.rangeHandle}
               type="button"
-              aria-label={`End of ${props.legend ?? 'date and time range'}`}
+              aria-label="End of selected range"
               onPointerDown={(event) => onHandlePointerDown(event, 'max')}
               onPointerMove={onPointerMove}
               onPointerUp={onPointerEnd}
@@ -198,6 +201,6 @@ export default function RangeSlider(props: RangeSliderProps) {
           <span class={styles.label}>{formatValue(props.maxLimit)}</span>
         </div>
       </div>
-    </fieldset>
+    </div>
   );
 }
