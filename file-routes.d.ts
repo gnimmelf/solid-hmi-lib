@@ -47,6 +47,12 @@ declare module "virtual:file-routes" {
       $$route?: undefined;
     },
     {
+      path: "/pages/date-time-range";
+      page: true;
+      $component: FileRouteLazyRef<typeof import("./src/routes/pages/date-time-range")>;
+      $$route?: undefined;
+    },
+    {
       path: "/pages/";
       page: true;
       $component: FileRouteLazyRef<typeof import("./src/routes/pages/index")>;
@@ -84,6 +90,14 @@ declare module "virtual:file-routes" {
       id: "/pages/";
       page: true;
       $component: FileRouteLazyRef<typeof import("./src/routes/pages/index")>;
+      $$route?: undefined;
+      children?: undefined;
+    },
+    {
+      path: "/pages/date-time-range";
+      id: "/pages/date-time-range";
+      page: true;
+      $component: FileRouteLazyRef<typeof import("./src/routes/pages/date-time-range")>;
       $$route?: undefined;
       children?: undefined;
     },
