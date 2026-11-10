@@ -7,8 +7,8 @@ const maxLimit = new Date('2026-11-30T23:59:00.000Z');
 
 export default function DateTimeRangePage() {
   const [selection, setSelection] = createSignal<DateTimeRangeValue>({
-    minValue: new Date('2006-11-10T08:00:00.000Z'),
-    maxValue: new Date('2026-11-12T16:00:00.000Z'),
+    minValue: new Date('2014-11-10T08:00:00.000Z'),
+    maxValue: new Date('2020-11-12T16:00:00.000Z'),
   });
 
   const handleRangeChange = (range: DateTimeRangeValue) => setSelection(range);
@@ -17,7 +17,7 @@ export default function DateTimeRangePage() {
     <main>
       <Title>Date and Time Range</Title>
       <h1>Date and time range</h1>
-      <p>Drag the selected window or either handle to choose a date-time range.</p>
+      <p>Use the detail slider to edit the selection and the overview slider to pan or resize the visible range.</p>
       <DateTimeRange
         legend="Selected date-time range"
         minValue={selection().minValue}
