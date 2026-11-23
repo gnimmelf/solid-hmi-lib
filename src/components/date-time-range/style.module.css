@@ -24,3 +24,15 @@
 .selection strong {
   font-weight: 600;
 }
+
+.overviewOptions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+
+  & > label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+}

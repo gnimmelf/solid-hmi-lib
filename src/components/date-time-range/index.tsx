@@ -116,6 +116,65 @@ export default function DateTimeRange(props: DateTimeRangeProps) {
     const selectedMin = timestamp(props.minValue);
     const selectedMax = timestamp(props.maxValue);
 
+    if (overviewMode() === "push" && !isPan) {
+      const selectedDuration = selectedMax - selectedMin;
+      const minimumSpan = Math.max(selectedDuration, step() * 2);
+      const isMinHandleResize = range.maxValue === currentViewport.maxValue;
+      const isMaxHandleResize = range.minValue === currentViewport.minValue;
+
+      if (isMinHandleResize) {
+        const nextMax = currentViewport.maxValue;
+        const minLimit = timestamp(props.minLimit);
+        const span = Math.min(
+          nextMax - minLimit,
+          Math.max(minimumSpan, nextSpan),
+        );
+        const nextMin = Math.min(
+          nextMax - span,
+          Math.max(minLimit, range.minValue),
+        );
+        const nextSelectedMin = Math.min(
+          nextMax - selectedDuration,
+          Math.max(nextMin, selectedMin),
+        );
+
+        if (nextSelectedMin !== selectedMin) {
+          props.onRangeChange?.({
+            minValue: new Date(nextSelectedMin),
+            maxValue: new Date(nextSelectedMin + selectedDuration),
+          });
+        }
+        setViewport({ minValue: nextMin, maxValue: nextMax });
+        return;
+      }
+
+      if (isMaxHandleResize) {
+        const nextMin = currentViewport.minValue;
+        const maxLimit = timestamp(props.maxLimit);
+        const span = Math.min(
+          maxLimit - nextMin,
+          Math.max(minimumSpan, nextSpan),
+        );
+        const nextMax = Math.max(
+          nextMin + span,
+          Math.min(maxLimit, range.maxValue),
+        );
+        const nextSelectedMin = Math.min(
+          nextMax - selectedDuration,
+          Math.max(nextMin, selectedMin),
+        );
+
+        if (nextSelectedMin !== selectedMin) {
+          props.onRangeChange?.({
+            minValue: new Date(nextSelectedMin),
+            maxValue: new Date(nextSelectedMin + selectedDuration),
+          });
+        }
+        setViewport({ minValue: nextMin, maxValue: nextMax });
+        return;
+      }
+    }
+
     if (overviewMode() === "lock" && !isPan) {
       const isMinHandleResize = range.maxValue === currentViewport.maxValue;
       const isMaxHandleResize = range.minValue === currentViewport.minValue;
@@ -199,7 +258,7 @@ export default function DateTimeRange(props: DateTimeRangeProps) {
   return (
     <fieldset class={styles.dateTimeRange}>
       <legend>{props.legend ?? "Date and time range"}</legend>
-      <fieldset>
+      <fieldset class={styles.overviewOptions}>
         <legend>Overview behavior</legend>
         <label>
           <input
